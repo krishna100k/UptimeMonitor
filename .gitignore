@@ -1,0 +1,12 @@
+backend/[Bb]in/
+backend/[Oo]bj/
+backend/[Ll]og/
+backend/[Ll]ogs/
+
+.vs/
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.sln.iml
+*.suo
+*.user

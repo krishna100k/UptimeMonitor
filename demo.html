@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pulse — Uptime Monitor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+--bg: #020617;
+--panel: #0f172a;
+--panel-2: #0b1220;
+--border: #1e293b;
+--text: #e2e8f0;
+--muted: #64748b;
+--muted-2: #475569;
+--accent: #22d3ee;
+--up: #34d399;
+--degraded: #fbbf24;
+--down: #fb7185;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+background: var(--bg);
+color: var(--text);
+font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+display: flex;
+min-height: 100vh;
+}
+
+.mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+.display { font-family: 'Space Grotesk', ui-sans-serif, sans-serif; }
+
+/* Sidebar */
+aside {
+width: 288px;
+flex-shrink: 0;
+border-right: 1px solid var(--border);
+display: flex;
+flex-direction: column;
+height: 100vh;
+position: sticky;
+top: 0;
+}
+
+.brand {
+padding: 24px 20px 16px;
+}
+.brand-row {
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.brand-row svg { color: var(--accent); }
+.brand-name {
+font-size: 18px;
+font-weight: 600;
+color: #f1f5f9;
+}
+.brand-sub {
+font-size: 12px;
+color: var(--muted);
+margin-top: 4px;
+}
+
+.search-wrap {
+padding: 0 20px 12px;
+position: relative;
+}
+.search-wrap svg {
+position: absolute;
+left: 30px;
+top: 50%;
+transform: translateY(-50%);
+color: #475569;
+}
+#search {
+width: 100%;
+background: var(--panel);
+border: 1px solid var(--border);
+border-radius: 6px;
+padding: 7px 12px 7px 30px;
+font-size: 13px;
+color: #cbd5e1;
+outline: none;
+}
+#search::placeholder { color: #475569; }
+#search:focus { border-color: #334155; }
+
+nav#list {
+flex: 1;
+overflow-y: auto;
+padding: 0 8px;
+}
+
+.ep-item {
+width: 100%;
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 10px 12px;
+border-radius: 6px;
+margin-bottom: 2px;
+background: none;
+border: none;
+cursor: pointer;
+text-align: left;
+color: inherit;
+font: inherit;
+}
+.ep-item:hover { background: #0f172a; }
+.ep-item.active { background: #1e293b; }
+
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dot.up { background: var(--up); }
+.dot.degraded { background: var(--degraded); }
+.dot.down { background: var(--down); }
+
+.ep-info { flex: 1; min-width: 0; }
+.ep-name {
+font-size: 14px;
+color: #e2e8f0;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+.ep-url {
+font-size: 11px;
+color: #475569;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+.ep-latency {
+font-size: 12px;
+color: var(--muted);
+flex-shrink: 0;
+}
+
+.add-endpoint {
+margin: 12px;
+padding: 12px;
+border-top: 1px solid var(--border);
+}
+.add-endpoint button {
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+background: none;
+border: 1px dashed var(--border);
+border-radius: 6px;
+padding: 9px;
+color: var(--muted);
+font-size: 13px;
+cursor: pointer;
+}
+.add-endpoint button:hover { color: #cbd5e1; border-color: #334155; }
+
+/* Main */
+main {
+flex: 1;
+padding: 32px 40px;
+max-width: 900px;
+overflow-y: auto;
+}
+
+.top-row {
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+margin-bottom: 32px;
+}
+#ep-name {
+font-size: 24px;
+font-weight: 600;
+color: #f1f5f9;
+}
+#ep-url {
+font-size: 13px;
+color: var(--muted);
+margin-top: 4px;
+}
+.top-actions { display: flex; align-items: center; gap: 12px; }
+.status-pill { display: flex; align-items: center; gap: 6px; font-size: 14px; }
+.status-pill .dot { width: 8px; height: 8px; }
+.icon-btn {
+width: 32px;
+height: 32px;
+display: flex;
+align-items: center;
+justify-content: center;
+border: 1px solid var(--border);
+border-radius: 6px;
+background: none;
+color: var(--muted);
+cursor: pointer;
+}
+.icon-btn:hover { color: #cbd5e1; border-color: #334155; }
+
+/* Stats */
+.stats-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 1px;
+background: var(--border);
+border: 1px solid var(--border);
+border-radius: 8px;
+overflow: hidden;
+margin-bottom: 32px;
+}
+.stat-cell {
+background: var(--bg);
+padding: 16px 20px;
+}
+.stat-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.stat-value { font-size: 20px; font-weight: 500; color: #f1f5f9; }
+
+section { margin-bottom: 32px; }
+.section-label {
+font-size: 13px;
+color: #94a3b8;
+margin-bottom: 12px;
+}
+.section-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 12px;
+}
+.section-row .section-label { margin-bottom: 0; }
+.uptime-figure { font-size: 13px; color: var(--muted); }
+
+.chart-box {
+height: 210px;
+background: rgba(15, 23, 42, 0.4);
+border: 1px solid var(--border);
+border-radius: 8px;
+padding: 16px;
+}
+
+.timeline-box {
+display: flex;
+gap: 3px;
+background: rgba(15, 23, 42, 0.4);
+border: 1px solid var(--border);
+border-radius: 8px;
+padding: 16px;
+}
+.timeline-bar {
+flex: 1;
+height: 32px;
+border-radius: 2px;
+opacity: 0.9;
+}
+.timeline-bar:hover { opacity: 1; }
+.timeline-caption {
+display: flex;
+justify-content: space-between;
+margin-top: 8px;
+font-size: 12px;
+color: #475569;
+}
+
+.incidents-empty {
+border: 1px solid var(--border);
+border-radius: 8px;
+padding: 24px;
+text-align: center;
+color: var(--muted);
+font-size: 14px;
+}
+.incidents-list {
+border: 1px solid var(--border);
+border-radius: 8px;
+overflow: hidden;
+}
+.incident-row {
+display: flex;
+align-items: center;
+gap: 16px;
+padding: 14px 20px;
+border-bottom: 1px solid var(--border);
+}
+.incident-row:last-child { border-bottom: none; }
+.incident-note { flex: 1; font-size: 14px; color: #cbd5e1; }
+.incident-duration { font-size: 12px; color: var(--muted); flex-shrink: 0; }
+.incident-date { font-size: 12px; color: #475569; flex-shrink: 0; width: 80px; text-align: right; }
+
+#tooltip {
+position: absolute;
+background: #0f172a;
+border: 1px solid var(--border);
+border-radius: 6px;
+padding: 6px 10px;
+font-size: 12px;
+color: #cbd5e1;
+pointer-events: none;
+opacity: 0;
+transition: opacity 0.1s;
+z-index: 10;
+}
+</style>
+</head>
+<body>
+
+<aside>
+<div class="brand">
+<div class="brand-row">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+<path d="M2 12h4l2-7 4 14 3-9 2 4h5"/>
+</svg>
+<span class="brand-name display">Pulse</span>
+</div>
+<p class="brand-sub" id="brand-sub"></p>
+</div>
+
+<div class="search-wrap">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+</svg>
+<input id="search" type="text" placeholder="Search endpoints" />
+</div>
+
+<nav id="list"></nav>
+
+<div class="add-endpoint">
+<button>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M12 5v14M5 12h14"/>
+</svg>
+Add endpoint
+</button>
+</div>
+</aside>
+
+<main>
+<div class="top-row">
+<div>
+<h1 id="ep-name" class="display"></h1>
+<p id="ep-url" class="mono"></p>
+</div>
+<div class="top-actions">
+<span class="status-pill" id="status-pill"></span>
+<button class="icon-btn" title="Pause monitoring">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+</svg>
+</button>
+<button class="icon-btn" title="Edit endpoint">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+</svg>
+</button>
+</div>
+</div>
+
+<div class="stats-grid" id="stats-grid"></div>
+
+<section>
+<p class="section-label">Response time, last 24 hours</p>
+<div class="chart-box">
+<svg id="chart-svg" width="100%" height="100%" viewBox="0 0 720 180" preserveAspectRatio="none"></svg>
+</div>
+</section>
+
+<section>
+<div class="section-row">
+<p class="section-label">Uptime history, last 90 days</p>
+<p class="uptime-figure mono" id="uptime-figure"></p>
+</div>
+<div class="timeline-box" id="timeline-box"></div>
+<div class="timeline-caption"><span>90 days ago</span><span>Today</span></div>
+</section>
+
+<section>
+<p class="section-label">Recent incidents</p>
+<div id="incidents-container"></div>
+</section>
+</main>
+
+<div id="tooltip"></div>
+
+<script>
+// ---------- deterministic dummy data ----------
+function seededRandom(seed) {
+let s = seed;
+return function next() {
+s = (s * 9301 + 49297) % 233280;
+return s / 233280;
+};
+}
+
+function buildLatencySeries(base, seed, points = 24) {
+const rand = seededRandom(seed);
+return Array.from({ length: points }, (_, i) => {
+const wobble = (rand() - 0.5) * base * 0.5;
+const wave = Math.sin(i / 3) * base * 0.08;
+return Math.max(8, Math.round(base + wobble + wave));
+});
+}
+
+function buildStatusHistory(seed, days = 90, downProb = 0.025, degradedProb = 0.04) {
+const rand = seededRandom(seed);
+return Array.from({ length: days }, () => {
+const r = rand();
+if (r < downProb) return "down";
+if (r < downProb + degradedProb) return "degraded";
+return "up";
+});
+}
+
+function uptimeFromHistory(history, window) {
+const slice = history.slice(-window);
+const up = slice.filter((s) => s === "up").length;
+return ((up / slice.length) * 100).toFixed(2);
+}
+
+function p95(values) {
+const sorted = [...values].sort((a, b) => a - b);
+const idx = Math.floor(sorted.length * 0.95);
+return sorted[Math.min(idx, sorted.length - 1)];
+}
+
+const rawEndpoints = [
+{ id: "checkout", name: "Checkout API", url: "api.pulsehq.dev/checkout", status: "up", baseLatency: 118, seed: 41,
+incidents: [{ date: "Aug 22", duration: "3 min", note: "Elevated response time during deploy" }] },
+{ id: "auth", name: "Auth Service", url: "auth.pulsehq.dev", status: "up", baseLatency: 64, seed: 17, incidents: [] },
+{ id: "cdn", name: "Image CDN", url: "cdn.pulsehq.dev/assets", status: "degraded", baseLatency: 310, seed: 83,
+incidents: [
+{ date: "Today, 09:14", duration: "ongoing", note: "Origin fetch latency above threshold" },
+{ date: "Sep 2", duration: "11 min", note: "Regional cache miss spike" },
+] },
+{ id: "webhook", name: "Webhook Relay", url: "hooks.pulsehq.dev/relay", status: "down", baseLatency: 90, seed: 6,
+incidents: [
+{ date: "Today, 14:22", duration: "6 min so far", note: "Connection refused by downstream host" },
+{ date: "Aug 30", duration: "2 min", note: "Timeout on retry queue" },
+] },
+{ id: "search", name: "Search API", url: "api.pulsehq.dev/search", status: "up", baseLatency: 142, seed: 29,
+incidents: [{ date: "Aug 11", duration: "4 min", note: "Index rebuild caused slow queries" }] },
+];
+
+const endpoints = rawEndpoints.map((e) => {
+const history90 = buildStatusHistory(e.seed);
+if (e.status === "down") history90[history90.length - 1] = "down";
+if (e.status === "degraded") history90[history90.length - 1] = "degraded";
+const latency24h = buildLatencySeries(e.baseLatency, e.seed + 100);
+return {
+...e,
+history90,
+latency24h,
+uptime30d: uptimeFromHistory(history90, 30),
+avgLatency: Math.round(latency24h.reduce((a, b) => a + b, 0) / latency24h.length),
+p95Latency: p95(latency24h),
+};
+});
+
+const statusMeta = {
+up: { label: "Operational", color: "var(--up)", hex: "#34d399" },
+degraded: { label: "Degraded", color: "var(--degraded)", hex: "#fbbf24" },
+down: { label: "Down", color: "var(--down)", hex: "#fb7185" },
+};
+
+// ---------- state ----------
+let selectedId = endpoints[0].id;
+let query = "";
+
+// ---------- render ----------
+function counts() {
+const c = { up: 0, degraded: 0, down: 0 };
+endpoints.forEach((e) => c[e.status]++);
+return c;
+}
+
+function renderSidebar() {
+const c = counts();
+document.getElementById("brand-sub").textContent =
+`${c.up} operational · ${c.degraded} degraded · ${c.down} down`;
+
+const list = document.getElementById("list");
+list.innerHTML = "";
+endpoints
+.filter((e) => e.name.toLowerCase().includes(query.toLowerCase()))
+.forEach((e) => {
+const btn = document.createElement("button");
+btn.className = "ep-item" + (e.id === selectedId ? " active" : "");
+btn.innerHTML = `
+<span class="dot ${e.status}"></span>
+<span class="ep-info">
+<span class="ep-name">${e.name}</span>
+<span class="ep-url mono">${e.url}</span>
+</span>
+<span class="ep-latency mono">${e.avgLatency}ms</span>
+`;
+btn.addEventListener("click", () => {
+selectedId = e.id;
+renderAll();
+});
+list.appendChild(btn);
+});
+}
+
+function renderMain() {
+const e = endpoints.find((x) => x.id === selectedId);
+const meta = statusMeta[e.status];
+
+document.getElementById("ep-name").textContent = e.name;
+document.getElementById("ep-url").textContent = e.url;
+document.getElementById("status-pill").innerHTML =
+`<span class="dot ${e.status}"></span><span style="color:${meta.color}">${meta.label}</span>`;
+
+document.getElementById("stats-grid").innerHTML = [
+["Uptime, 30 days", `${e.uptime30d}%`],
+["Avg. latency", `${e.avgLatency}ms`],
+["P95 latency", `${e.p95Latency}ms`],
+["Checks today", "288"],
+].map(([label, value]) => `
+<div class="stat-cell">
+<div class="stat-label">${label}</div>
+<div class="stat-value mono">${value}</div>
+</div>
+`).join("");
+
+renderChart(e);
+
+document.getElementById("uptime-figure").textContent = `${e.uptime30d}% uptime`;
+const timeline = document.getElementById("timeline-box");
+timeline.innerHTML = "";
+e.history90.forEach((s, i) => {
+const bar = document.createElement("div");
+bar.className = "timeline-bar";
+bar.style.background = statusMeta[s].hex;
+bar.title = `Day ${i + 1}: ${statusMeta[s].label}`;
+timeline.appendChild(bar);
+});
+
+const container = document.getElementById("incidents-container");
+if (e.incidents.length === 0) {
+container.innerHTML = `<div class="incidents-empty">No incidents recorded. Nice and quiet.</div>`;
+} else {
+container.innerHTML = `<div class="incidents-list">${e.incidents.map((inc) => `
+<div class="incident-row">
+<span class="dot down"></span>
+<span class="incident-note">${inc.note}</span>
+<span class="incident-duration mono">${inc.duration}</span>
+<span class="incident-date mono">${inc.date}</span>
+</div>
+`).join("")}</div>`;
+}
+}
+
+function renderChart(e) {
+const svg = document.getElementById("chart-svg");
+const W = 720, H = 180, pad = 8;
+const values = e.latency24h;
+const max = Math.max(...values) * 1.15;
+const min = 0;
+const stepX = (W - pad * 2) / (values.length - 1);
+const toY = (v) => H - pad - ((v - min) / (max - min)) * (H - pad * 2);
+
+const points = values.map((v, i) => [pad + i * stepX, toY(v)]);
+const linePath = "M " + points.map((p) => p.join(",")).join(" L ");
+const areaPath = linePath + ` L ${points[points.length - 1][0]},${H} L ${points[0][0]},${H} Z`;
+const color = statusMeta[e.status].hex;
+
+svg.innerHTML = `
+<defs>
+<linearGradient id="fill" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="${color}" stop-opacity="0.35"/>
+<stop offset="100%" stop-color="${color}" stop-opacity="0"/>
+</linearGradient>
+</defs>
+${[0.25, 0.5, 0.75].map(f => `<line x1="0" y1="${H*f}" x2="${W}" y2="${H*f}" stroke="#1e293b" stroke-dasharray="3 3"/>`).join("")}
+<path d="${areaPath}" fill="url(#fill)" />
+<path d="${linePath}" fill="none" stroke="${color}" stroke-width="2" />
+${points.map((p, i) => `<circle cx="${p[0]}" cy="${p[1]}" r="7" fill="transparent" data-i="${i}" class="hover-pt" style="cursor:pointer"/>`).join("")}
+`;
+
+const tooltip = document.getElementById("tooltip");
+svg.querySelectorAll(".hover-pt").forEach((c) => {
+c.addEventListener("mousemove", (evt) => {
+const i = c.getAttribute("data-i");
+tooltip.textContent = `${values[i]}ms`;
+tooltip.style.left = evt.pageX + 12 + "px";
+tooltip.style.top = evt.pageY - 24 + "px";
+tooltip.style.opacity = 1;
+});
+c.addEventListener("mouseleave", () => { tooltip.style.opacity = 0; });
+});
+}
+
+function renderAll() {
+renderSidebar();
+renderMain();
+}
+
+document.getElementById("search").addEventListener("input", (evt) => {
+query = evt.target.value;
+renderSidebar();
+});
+
+renderAll();
+</script>
+
+</body>
+</html>

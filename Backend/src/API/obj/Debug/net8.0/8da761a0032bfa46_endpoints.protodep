@@ -1,0 +1,2 @@
+obj\Debug\net8.0/Endpoints.cs \
+obj\Debug\net8.0/EndpointsGrpc.cs: ../Protos/endpoints.proto

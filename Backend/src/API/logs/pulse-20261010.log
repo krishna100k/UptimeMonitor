@@ -1,0 +1,310 @@
+2026-10-10 00:01:48.654 +05:30 [INF] Now listening on: https://localhost:7122
+2026-10-10 00:01:48.708 +05:30 [INF] Now listening on: http://localhost:5211
+2026-10-10 00:01:48.712 +05:30 [INF] EndpointCheckProcessor started. Listening on endpoint-checks queue.
+2026-10-10 00:01:49.100 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - application/grpc null
+2026-10-10 00:01:49.229 +05:30 [INF] Executing endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:01:49.258 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-10 00:01:49.266 +05:30 [INF] Hosting environment: Development
+2026-10-10 00:01:49.268 +05:30 [INF] Content root path: C:\Users\krish\OneDrive\Documents\Programming Journey formerly Development\Projects\UptimeMonitor\Backend\src\API
+2026-10-10 00:01:55.381 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7122/swagger/index.html - null null
+2026-10-10 00:01:55.579 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7122/swagger/index.html - 200 null text/html;charset=utf-8 197.1725ms
+2026-10-10 00:01:55.903 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7122/_framework/aspnetcore-browser-refresh.js - null null
+2026-10-10 00:01:55.905 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7122/_vs/browserLink - null null
+2026-10-10 00:01:55.917 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7122/_framework/aspnetcore-browser-refresh.js - 200 13758 application/javascript; charset=utf-8 13.4762ms
+2026-10-10 00:01:55.953 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7122/_vs/browserLink - 200 null text/javascript; charset=UTF-8 48.1072ms
+2026-10-10 00:01:56.094 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7122/swagger/v1/swagger.json - null null
+2026-10-10 00:01:56.120 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7122/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 25.5422ms
+2026-10-10 00:01:56.590 +05:30 [INF] Executed DbCommand (30ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT e."Id", e."CreatedAt", e."DeletedAt", e."IsDeleted", e."IsPaused", e."LastCheckedAt", e."Name", e."Url"
+FROM "Endpoint" AS e
+WHERE NOT (e."IsDeleted")
+2026-10-10 00:01:56.632 +05:30 [INF] Executed DbCommand (73ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:02:06.846 +05:30 [INF] Endpoint check "c5d9a44d-84f6-47fc-aa02-5764132e74b4" processed successfully.
+2026-10-10 00:02:06.950 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:02:06.953 +05:30 [INF] Endpoint check "f8fbd069-e497-4da3-95c0-da121d1d325a" processed successfully.
+2026-10-10 00:02:06.959 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:02:06.963 +05:30 [INF] Endpoint check "c5d9a44d-84f6-47fc-aa02-5764132e74b4" processed successfully.
+2026-10-10 00:02:06.968 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:02:06.968 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT t0."Id", t0."CheckedAt", t0."EndpointId", t0."ResponseTimeMs", t0."Status", t0."Success"
+FROM (
+    SELECT e."EndpointId"
+    FROM "EndpointCheck" AS e
+    GROUP BY e."EndpointId"
+) AS t
+LEFT JOIN (
+    SELECT t1."Id", t1."CheckedAt", t1."EndpointId", t1."ResponseTimeMs", t1."Status", t1."Success"
+    FROM (
+        SELECT e0."Id", e0."CheckedAt", e0."EndpointId", e0."ResponseTimeMs", e0."Status", e0."Success", ROW_NUMBER() OVER(PARTITION BY e0."EndpointId" ORDER BY e0."CheckedAt" DESC) AS row
+        FROM "EndpointCheck" AS e0
+    ) AS t1
+    WHERE t1.row <= 1
+) AS t0 ON t."EndpointId" = t0."EndpointId"
+2026-10-10 00:02:06.971 +05:30 [INF] Endpoint check "f8fbd069-e497-4da3-95c0-da121d1d325a" processed successfully.
+2026-10-10 00:02:06.979 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:02:06.982 +05:30 [INF] Endpoint check "c5d9a44d-84f6-47fc-aa02-5764132e74b4" processed successfully.
+2026-10-10 00:02:06.988 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:02:06.991 +05:30 [INF] Endpoint check "f8fbd069-e497-4da3-95c0-da121d1d325a" processed successfully.
+2026-10-10 00:02:06.996 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:02:06.999 +05:30 [INF] Endpoint check "c5d9a44d-84f6-47fc-aa02-5764132e74b4" processed successfully.
+2026-10-10 00:02:07.004 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:02:07.007 +05:30 [INF] Endpoint check "f8fbd069-e497-4da3-95c0-da121d1d325a" processed successfully.
+2026-10-10 00:02:07.012 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:02:07.015 +05:30 [INF] Endpoint check "c5d9a44d-84f6-47fc-aa02-5764132e74b4" processed successfully.
+2026-10-10 00:02:07.020 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:02:07.024 +05:30 [INF] Endpoint check "f8fbd069-e497-4da3-95c0-da121d1d325a" processed successfully.
+2026-10-10 00:02:07.029 +05:30 [INF] Executed endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:02:07.032 +05:30 [INF] HTTP POST /endpoints.EndpointService/GetActiveEndpoints responded 200 in 17805.2724 ms
+2026-10-10 00:02:07.041 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - 200 null application/grpc 17945.4674ms
+2026-10-10 00:02:07.500 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:02:07.504 +05:30 [INF] Endpoint check "f8fbd069-e497-4da3-95c0-da121d1d325a" processed successfully.
+2026-10-10 00:02:07.508 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:02:07.512 +05:30 [INF] Endpoint check "c5d9a44d-84f6-47fc-aa02-5764132e74b4" processed successfully.
+2026-10-10 00:02:07.699 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - application/grpc null
+2026-10-10 00:02:07.704 +05:30 [INF] Executing endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:02:07.710 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT e."Id", e."CreatedAt", e."DeletedAt", e."IsDeleted", e."IsPaused", e."LastCheckedAt", e."Name", e."Url"
+FROM "Endpoint" AS e
+WHERE NOT (e."IsDeleted")
+2026-10-10 00:02:07.717 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT t0."Id", t0."CheckedAt", t0."EndpointId", t0."ResponseTimeMs", t0."Status", t0."Success"
+FROM (
+    SELECT e."EndpointId"
+    FROM "EndpointCheck" AS e
+    GROUP BY e."EndpointId"
+) AS t
+LEFT JOIN (
+    SELECT t1."Id", t1."CheckedAt", t1."EndpointId", t1."ResponseTimeMs", t1."Status", t1."Success"
+    FROM (
+        SELECT e0."Id", e0."CheckedAt", e0."EndpointId", e0."ResponseTimeMs", e0."Status", e0."Success", ROW_NUMBER() OVER(PARTITION BY e0."EndpointId" ORDER BY e0."CheckedAt" DESC) AS row
+        FROM "EndpointCheck" AS e0
+    ) AS t1
+    WHERE t1.row <= 1
+) AS t0 ON t."EndpointId" = t0."EndpointId"
+2026-10-10 00:02:07.720 +05:30 [INF] Executed endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:02:07.722 +05:30 [INF] HTTP POST /endpoints.EndpointService/GetActiveEndpoints responded 200 in 17.9768 ms
+2026-10-10 00:02:07.724 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - 200 null application/grpc 24.7926ms
+2026-10-10 00:02:07.948 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:02:07.952 +05:30 [INF] Endpoint check "f8fbd069-e497-4da3-95c0-da121d1d325a" processed successfully.
+2026-10-10 00:02:07.957 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:02:07.961 +05:30 [INF] Endpoint check "c5d9a44d-84f6-47fc-aa02-5764132e74b4" processed successfully.
+2026-10-10 00:03:00.073 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - application/grpc null
+2026-10-10 00:03:00.084 +05:30 [INF] Executing endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:03:00.118 +05:30 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT e."Id", e."CreatedAt", e."DeletedAt", e."IsDeleted", e."IsPaused", e."LastCheckedAt", e."Name", e."Url"
+FROM "Endpoint" AS e
+WHERE NOT (e."IsDeleted")
+2026-10-10 00:03:00.128 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT t0."Id", t0."CheckedAt", t0."EndpointId", t0."ResponseTimeMs", t0."Status", t0."Success"
+FROM (
+    SELECT e."EndpointId"
+    FROM "EndpointCheck" AS e
+    GROUP BY e."EndpointId"
+) AS t
+LEFT JOIN (
+    SELECT t1."Id", t1."CheckedAt", t1."EndpointId", t1."ResponseTimeMs", t1."Status", t1."Success"
+    FROM (
+        SELECT e0."Id", e0."CheckedAt", e0."EndpointId", e0."ResponseTimeMs", e0."Status", e0."Success", ROW_NUMBER() OVER(PARTITION BY e0."EndpointId" ORDER BY e0."CheckedAt" DESC) AS row
+        FROM "EndpointCheck" AS e0
+    ) AS t1
+    WHERE t1.row <= 1
+) AS t0 ON t."EndpointId" = t0."EndpointId"
+2026-10-10 00:03:00.134 +05:30 [INF] Executed endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:03:00.135 +05:30 [INF] HTTP POST /endpoints.EndpointService/GetActiveEndpoints responded 200 in 51.6942 ms
+2026-10-10 00:03:00.139 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - 200 null application/grpc 67.1936ms
+2026-10-10 00:03:00.410 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:03:00.412 +05:30 [INF] Endpoint check "c5d9a44d-84f6-47fc-aa02-5764132e74b4" processed successfully.
+2026-10-10 00:04:00.125 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - application/grpc null
+2026-10-10 00:04:00.137 +05:30 [INF] Executing endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:04:00.164 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT e."Id", e."CreatedAt", e."DeletedAt", e."IsDeleted", e."IsPaused", e."LastCheckedAt", e."Name", e."Url"
+FROM "Endpoint" AS e
+WHERE NOT (e."IsDeleted")
+2026-10-10 00:04:00.176 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT t0."Id", t0."CheckedAt", t0."EndpointId", t0."ResponseTimeMs", t0."Status", t0."Success"
+FROM (
+    SELECT e."EndpointId"
+    FROM "EndpointCheck" AS e
+    GROUP BY e."EndpointId"
+) AS t
+LEFT JOIN (
+    SELECT t1."Id", t1."CheckedAt", t1."EndpointId", t1."ResponseTimeMs", t1."Status", t1."Success"
+    FROM (
+        SELECT e0."Id", e0."CheckedAt", e0."EndpointId", e0."ResponseTimeMs", e0."Status", e0."Success", ROW_NUMBER() OVER(PARTITION BY e0."EndpointId" ORDER BY e0."CheckedAt" DESC) AS row
+        FROM "EndpointCheck" AS e0
+    ) AS t1
+    WHERE t1.row <= 1
+) AS t0 ON t."EndpointId" = t0."EndpointId"
+2026-10-10 00:04:00.180 +05:30 [INF] Executed endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:04:00.182 +05:30 [INF] HTTP POST /endpoints.EndpointService/GetActiveEndpoints responded 200 in 45.5624 ms
+2026-10-10 00:04:00.184 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - 200 null application/grpc 59.6698ms
+2026-10-10 00:04:06.289 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:04:06.292 +05:30 [INF] Endpoint check "c5d9a44d-84f6-47fc-aa02-5764132e74b4" processed successfully.
+2026-10-10 00:05:00.088 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - application/grpc null
+2026-10-10 00:05:00.098 +05:30 [INF] Executing endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:05:00.125 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT e."Id", e."CreatedAt", e."DeletedAt", e."IsDeleted", e."IsPaused", e."LastCheckedAt", e."Name", e."Url"
+FROM "Endpoint" AS e
+WHERE NOT (e."IsDeleted")
+2026-10-10 00:05:00.138 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT t0."Id", t0."CheckedAt", t0."EndpointId", t0."ResponseTimeMs", t0."Status", t0."Success"
+FROM (
+    SELECT e."EndpointId"
+    FROM "EndpointCheck" AS e
+    GROUP BY e."EndpointId"
+) AS t
+LEFT JOIN (
+    SELECT t1."Id", t1."CheckedAt", t1."EndpointId", t1."ResponseTimeMs", t1."Status", t1."Success"
+    FROM (
+        SELECT e0."Id", e0."CheckedAt", e0."EndpointId", e0."ResponseTimeMs", e0."Status", e0."Success", ROW_NUMBER() OVER(PARTITION BY e0."EndpointId" ORDER BY e0."CheckedAt" DESC) AS row
+        FROM "EndpointCheck" AS e0
+    ) AS t1
+    WHERE t1.row <= 1
+) AS t0 ON t."EndpointId" = t0."EndpointId"
+2026-10-10 00:05:00.142 +05:30 [INF] Executed endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:05:00.144 +05:30 [INF] HTTP POST /endpoints.EndpointService/GetActiveEndpoints responded 200 in 45.7757 ms
+2026-10-10 00:05:00.146 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - 200 null application/grpc 59.0379ms
+2026-10-10 00:05:03.061 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:05:03.064 +05:30 [INF] Endpoint check "c5d9a44d-84f6-47fc-aa02-5764132e74b4" processed successfully.
+2026-10-10 00:06:00.063 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - application/grpc null
+2026-10-10 00:06:00.074 +05:30 [INF] Executing endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:06:00.125 +05:30 [INF] Executed DbCommand (32ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT e."Id", e."CreatedAt", e."DeletedAt", e."IsDeleted", e."IsPaused", e."LastCheckedAt", e."Name", e."Url"
+FROM "Endpoint" AS e
+WHERE NOT (e."IsDeleted")
+2026-10-10 00:06:00.136 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT t0."Id", t0."CheckedAt", t0."EndpointId", t0."ResponseTimeMs", t0."Status", t0."Success"
+FROM (
+    SELECT e."EndpointId"
+    FROM "EndpointCheck" AS e
+    GROUP BY e."EndpointId"
+) AS t
+LEFT JOIN (
+    SELECT t1."Id", t1."CheckedAt", t1."EndpointId", t1."ResponseTimeMs", t1."Status", t1."Success"
+    FROM (
+        SELECT e0."Id", e0."CheckedAt", e0."EndpointId", e0."ResponseTimeMs", e0."Status", e0."Success", ROW_NUMBER() OVER(PARTITION BY e0."EndpointId" ORDER BY e0."CheckedAt" DESC) AS row
+        FROM "EndpointCheck" AS e0
+    ) AS t1
+    WHERE t1.row <= 1
+) AS t0 ON t."EndpointId" = t0."EndpointId"
+2026-10-10 00:06:00.140 +05:30 [INF] Executed endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:06:00.142 +05:30 [INF] HTTP POST /endpoints.EndpointService/GetActiveEndpoints responded 200 in 68.2249 ms
+2026-10-10 00:06:00.153 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - 200 null application/grpc 91.2545ms
+2026-10-10 00:06:01.032 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:06:01.035 +05:30 [INF] Endpoint check "c5d9a44d-84f6-47fc-aa02-5764132e74b4" processed successfully.
+2026-10-10 00:07:00.078 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - application/grpc null
+2026-10-10 00:07:00.090 +05:30 [INF] Executing endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:07:00.178 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT e."Id", e."CreatedAt", e."DeletedAt", e."IsDeleted", e."IsPaused", e."LastCheckedAt", e."Name", e."Url"
+FROM "Endpoint" AS e
+WHERE NOT (e."IsDeleted")
+2026-10-10 00:07:00.192 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT t0."Id", t0."CheckedAt", t0."EndpointId", t0."ResponseTimeMs", t0."Status", t0."Success"
+FROM (
+    SELECT e."EndpointId"
+    FROM "EndpointCheck" AS e
+    GROUP BY e."EndpointId"
+) AS t
+LEFT JOIN (
+    SELECT t1."Id", t1."CheckedAt", t1."EndpointId", t1."ResponseTimeMs", t1."Status", t1."Success"
+    FROM (
+        SELECT e0."Id", e0."CheckedAt", e0."EndpointId", e0."ResponseTimeMs", e0."Status", e0."Success", ROW_NUMBER() OVER(PARTITION BY e0."EndpointId" ORDER BY e0."CheckedAt" DESC) AS row
+        FROM "EndpointCheck" AS e0
+    ) AS t1
+    WHERE t1.row <= 1
+) AS t0 ON t."EndpointId" = t0."EndpointId"
+2026-10-10 00:07:00.196 +05:30 [INF] Executed endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:07:00.197 +05:30 [INF] HTTP POST /endpoints.EndpointService/GetActiveEndpoints responded 200 in 107.4420 ms
+2026-10-10 00:07:00.201 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - 200 null application/grpc 121.6363ms
+2026-10-10 00:07:00.607 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:07:00.618 +05:30 [INF] Endpoint check "c5d9a44d-84f6-47fc-aa02-5764132e74b4" processed successfully.
+2026-10-10 00:08:00.072 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - application/grpc null
+2026-10-10 00:08:00.079 +05:30 [INF] Executing endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:08:00.100 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT e."Id", e."CreatedAt", e."DeletedAt", e."IsDeleted", e."IsPaused", e."LastCheckedAt", e."Name", e."Url"
+FROM "Endpoint" AS e
+WHERE NOT (e."IsDeleted")
+2026-10-10 00:08:00.114 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT t0."Id", t0."CheckedAt", t0."EndpointId", t0."ResponseTimeMs", t0."Status", t0."Success"
+FROM (
+    SELECT e."EndpointId"
+    FROM "EndpointCheck" AS e
+    GROUP BY e."EndpointId"
+) AS t
+LEFT JOIN (
+    SELECT t1."Id", t1."CheckedAt", t1."EndpointId", t1."ResponseTimeMs", t1."Status", t1."Success"
+    FROM (
+        SELECT e0."Id", e0."CheckedAt", e0."EndpointId", e0."ResponseTimeMs", e0."Status", e0."Success", ROW_NUMBER() OVER(PARTITION BY e0."EndpointId" ORDER BY e0."CheckedAt" DESC) AS row
+        FROM "EndpointCheck" AS e0
+    ) AS t1
+    WHERE t1.row <= 1
+) AS t0 ON t."EndpointId" = t0."EndpointId"
+2026-10-10 00:08:00.117 +05:30 [INF] Executed endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:08:00.119 +05:30 [INF] HTTP POST /endpoints.EndpointService/GetActiveEndpoints responded 200 in 39.4916 ms
+2026-10-10 00:08:00.122 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - 200 null application/grpc 50.247ms
+2026-10-10 00:08:03.594 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?' (DbType = Guid), @p3='?' (DbType = Int64), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EndpointCheck" ("Id", "CheckedAt", "EndpointId", "ResponseTimeMs", "Status", "Success")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2026-10-10 00:08:03.597 +05:30 [INF] Endpoint check "c5d9a44d-84f6-47fc-aa02-5764132e74b4" processed successfully.
+2026-10-10 00:09:00.299 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - application/grpc null
+2026-10-10 00:09:00.312 +05:30 [INF] Executing endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:09:00.343 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT e."Id", e."CreatedAt", e."DeletedAt", e."IsDeleted", e."IsPaused", e."LastCheckedAt", e."Name", e."Url"
+FROM "Endpoint" AS e
+WHERE NOT (e."IsDeleted")
+2026-10-10 00:09:00.355 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT t0."Id", t0."CheckedAt", t0."EndpointId", t0."ResponseTimeMs", t0."Status", t0."Success"
+FROM (
+    SELECT e."EndpointId"
+    FROM "EndpointCheck" AS e
+    GROUP BY e."EndpointId"
+) AS t
+LEFT JOIN (
+    SELECT t1."Id", t1."CheckedAt", t1."EndpointId", t1."ResponseTimeMs", t1."Status", t1."Success"
+    FROM (
+        SELECT e0."Id", e0."CheckedAt", e0."EndpointId", e0."ResponseTimeMs", e0."Status", e0."Success", ROW_NUMBER() OVER(PARTITION BY e0."EndpointId" ORDER BY e0."CheckedAt" DESC) AS row
+        FROM "EndpointCheck" AS e0
+    ) AS t1
+    WHERE t1.row <= 1
+) AS t0 ON t."EndpointId" = t0."EndpointId"
+2026-10-10 00:09:00.359 +05:30 [INF] Executed endpoint 'gRPC - /endpoints.EndpointService/GetActiveEndpoints'
+2026-10-10 00:09:00.360 +05:30 [INF] HTTP POST /endpoints.EndpointService/GetActiveEndpoints responded 200 in 48.6054 ms
+2026-10-10 00:09:00.364 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7122/endpoints.EndpointService/GetActiveEndpoints - 200 null application/grpc 65.7355ms

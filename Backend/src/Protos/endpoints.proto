@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option csharp_namespace = "UptimeMonitor.Grpc";
+
+package endpoints;
+
+service EndpointService {
+    rpc GetActiveEndpoints (GetActiveEndpointsRequest)
+        returns (GetActiveEndpointsResponse);
+}
+
+message GetActiveEndpointsRequest {
+}
+
+message GetActiveEndpointsResponse {
+    repeated Endpoint endpoints = 1;
+}
+
+message Endpoint {
+    string id = 1;
+    string name = 2;
+    string url = 3;
+}

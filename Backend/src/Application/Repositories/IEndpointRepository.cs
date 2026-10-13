@@ -1,5 +1,6 @@
 ﻿using Application.Repositories.Models.EndpointRepository;
 using Domain.Entities;
+using Domain.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;

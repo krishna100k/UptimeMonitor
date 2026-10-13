@@ -3,6 +3,7 @@ using Application.Repositories.Models;
 using Application.Repositories.Models.EndpointRepository;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Messages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

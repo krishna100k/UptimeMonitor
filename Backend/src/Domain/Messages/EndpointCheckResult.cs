@@ -1,12 +1,9 @@
-﻿using Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Enums;
 
-namespace MonitoringFunction.Contracts.Messages
+namespace Domain.Messages
 {
+    // The message sent over RabbitMQ from MonitoringFunction to the API.
+    // One shared class means both sides can never drift apart.
     public class EndpointCheckResult
     {
         public Guid EndpointId { get; set; }

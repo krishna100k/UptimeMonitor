@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using MonitoringFunction.Contracts.Messages;
+using Domain.Messages;
 using MonitoringFunction.RabbitMq;
 using System.Diagnostics;
 using System.Net.Http;
@@ -74,13 +74,20 @@ namespace MonitoringFunction
                         CheckedAt = DateTime.UtcNow,
                     };
 
-                    await _publisher.PublishAsync(result, cancellationToken);
-
                     _logger.LogInformation(
                         "{Url} returned {StatusCode} in {ResponseTimeMs}ms",
                         endpoint.Url,
                         response.StatusCode,
                         responseTimeMs);
+
+                    try
+                    {
+                        await _publisher.PublishAsync(result, token);
+                    }
+                    catch (Exception ex) when (ex is not OperationCanceledException)
+                    {
+                        _logger.LogError(ex, "Checked {Url} but failed to publish the result to RabbitMQ", endpoint.Url);
+                    }
                 }
                 catch (Exception ex)
                 {
